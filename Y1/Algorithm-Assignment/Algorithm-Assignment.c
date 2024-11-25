@@ -1,4 +1,6 @@
 /*
+Title: Algorithms Assignment, tasks 1-4
+
 Program Description: 
 This program manages and processes simulated aeronautical company data by storing it in an array of structures.
 It implements sorting algorithms with varying complexities to organize the data by different fields (such as issue codes or product IDs).
@@ -14,30 +16,36 @@ Grade: 100%
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-//symbolic names
+// Symbolic names
 #define SIZE 11
 #define UNIQUE_LINES 7
 #define DESCRIPTION 100
 
 
-//structure templates
+// Structure templates
+
+// Batch Date/Time
 struct batchDateTime {
     int dayOfMonth;
     int hourOfDay;
     int minuteOfHour;
 };
 
+// Issue code and description
 struct issue {
     int issueCode;
     char description[DESCRIPTION];
 };
 
+// Resolution code and description
 struct resolution{
     int resolutionCode;
     char description[DESCRIPTION];
 };
 
+// Production Line
 struct productionLine {
     int lineCode;
     int batchCode;
@@ -48,16 +56,22 @@ struct productionLine {
     int employeeId;
 };
 
-//task 2 struct template for linked list
+// Task 2 linked list node
 struct node {
     struct productionLine linkedlist;
     struct node *next;
 };
 
-//funx signatures
+// Funx signatures
 void printProductionLine(struct productionLine[], int);
 
-//Task1 funxs
+
+/*  Task1 Description:
+The production line logs are in a random order for each day. Order each line in Product id, Issue code, date & time order.
+There are huge amounts of data stored, the running time of this algorithm is O(NLog(N)). 
+Sorting Algorithm used: Merge Sort
+Display ordered data    */
+// Task1 funxs
 void task1(struct productionLine[], struct productionLine[], struct productionLine[], struct productionLine[]);
 void prodIDmerge1(struct productionLine[], int, int);
 void prodIDmerge(struct productionLine[], int, int, int);
@@ -69,16 +83,31 @@ void datetimeMergeSort(struct productionLine[],int,int);
 void datetimeMerge(struct productionLine[],int,int,int);
 void printProductionLineProdIDIssueCodeDate(struct productionLine line[], int lineNum);
 
-//Task 2 funxs
+
+/*  Task2 Description:
+Linked list to report issue codes by product Id and line Id for all production lines.
+Time complexity of algorithm: O(N)
+Display ordered data    */
+// Task 2 funxs
 struct node* structTolinkedList(struct productionLine[], struct productionLine[], struct productionLine[], struct productionLine[], int);
 void task2(struct productionLine[], struct productionLine[], struct productionLine[], struct productionLine[]);
 void printLink(struct node *);
 
-//Task 3 funxs
+
+/*  Task3 Description:
+Search for the earliest occurrence of an issue code for a user-given product id across all production lines.
+Time complexity of search algorithm: O(Log(N))
+Algorithm used: Binary search   */
+// Task 3 funxs
 void task3(struct productionLine[], struct productionLine[], struct productionLine[], struct productionLine[]);
 int binarySearch(struct productionLine[], int, int, int, int);
+bool validInput(int, int *, int);
 
-//Task 4 funxs
+
+/*  Task4 Description:
+Report which summarises the number of issues reported for a product across all production lines.
+Time comlexity: O(N)   */
+// Task 4 funxs
 void task4(struct productionLine[], struct productionLine[], struct productionLine[], struct productionLine[]);
 int* linearSearch(struct productionLine[], struct productionLine[], struct productionLine[], struct productionLine[], int, int, int[]);
 
@@ -96,10 +125,10 @@ int main()
         {1, 10509, {9, 12, 40}, 20937, {3210, "Delayed delivery"}, {2210, "Expedited delivery"}, 4389},
         {1, 10987, {20, 9, 5}, 20802, {3856, "Incorrect labeling"}, {2856, "Corrected labeling"}, 6234},
         //duplicates
-        {1, 10173, {6, 15, 45}, 20314, {3965, "Shipping issue"}, {2965, "Reshipped product"}, 9876},//changed date
-        {1, 10618, {18, 10, 55}, 20802, {3965, "Shipping issue"}, {2965, "Reshipped product"}, 8765},//changed prodID
-        {1, 10987, {19, 10, 20}, 20802, {3856, "Incorrect labeling"}, {2856, "Corrected labeling"}, 6234},//change Date
-        {1, 10894, {7, 8, 31}, 20314, {3147, "Faulty component"}, {2147, "Replaced component"}, 5421}//change prodID+date
+        {1, 10173, {6, 15, 45}, 20314, {3965, "Shipping issue"}, {2965, "Reshipped product"}, 9876},
+        {1, 10618, {18, 10, 55}, 20802, {3965, "Shipping issue"}, {2965, "Reshipped product"}, 8765},
+        {1, 10987, {19, 10, 20}, 20802, {3856, "Incorrect labeling"}, {2856, "Corrected labeling"}, 6234},
+        {1, 10894, {7, 8, 31}, 20314, {3147, "Faulty component"}, {2147, "Replaced component"}, 5421}
     };//line1
 
 
@@ -154,32 +183,29 @@ int main()
     };//line4
 
 
-    //print unordered production lines
+    // Print unordered production lines
     printProductionLine(line1, 1);
     printProductionLine(line2, 2);
     printProductionLine(line3, 3);
     printProductionLine(line4, 4);
 
-    //call task 1
+    // Call task 1
     task1(line1, line2, line3, line4);
 
-    //call task 2
+    // Call task 2
     task2(line1, line2, line3, line4);
 
-    //call task 3
+    // Call task 3
     task3(line1, line2, line3, line4);
 
-    //call task 4
+    // Call task 4
     task4(line1, line2, line3, line4);
-
-
-    //printf("\n\nshi is running!");
 
     return 0;
 }//end main
 
 
-//Displays production line
+// Displays production line
 void printProductionLine(struct productionLine line[], int lineNum) 
 {
     printf("\n\n\nProduction Line %d:\n\n", lineNum);
@@ -199,33 +225,34 @@ void printProductionLine(struct productionLine line[], int lineNum)
 }//end display product line funx
 
 
-
+// Task1
 void task1(struct productionLine line1[], struct productionLine line2[], struct productionLine line3[], struct productionLine line4[])
 {
 
     printf("\n\n\nTask 1: ");
+    printf("\nEach production line ordered by Product id, Issue code, date & time order");
 
-    //Sort line 1
+    // Sort line 1
     prodIDmerge1(line1, 0, SIZE - 1);
     datetimeSort(line1);
     issuecodeSort(line1);
 
-    //Sort line 2
+    // Sort line 2
     prodIDmerge1(line2, 0, SIZE - 1);
     datetimeSort(line2);
     issuecodeSort(line2);
 
-    //Sort line 3
+    // Sort line 3
     prodIDmerge1(line3, 0, SIZE - 1);
     datetimeSort(line3);
     issuecodeSort(line3);
 
-    //Sort line 4
+    // Sort line 4
     prodIDmerge1(line4, 0, SIZE - 1);
     datetimeSort(line4);
     issuecodeSort(line4);
 
-    //Dislay sorted lines
+    // Dislay sorted lines
     printProductionLineProdIDIssueCodeDate(line1, 1);
     printProductionLineProdIDIssueCodeDate(line2, 2);    
     printProductionLineProdIDIssueCodeDate(line3, 3);
@@ -234,7 +261,7 @@ void task1(struct productionLine line1[], struct productionLine line2[], struct 
 }//end task 1
 
 
-//merge sort product ID
+// Merge sort product ID
 void prodIDmerge1(struct productionLine line[], int l, int h)
 {
     int mid = 0;
@@ -252,7 +279,7 @@ void prodIDmerge1(struct productionLine line[], int l, int h)
 }//end prodIDmerge1
 
 
-//merge part of sort for product ID
+// Merge part of sort for product ID
 void prodIDmerge(struct productionLine line[], int l, int m, int h)
 {
     struct productionLine tempstruct[SIZE];
@@ -286,7 +313,7 @@ void prodIDmerge(struct productionLine line[], int l, int m, int h)
 }//end prodIDmerge
 
 
-//find duplicates for sorting by issue code after precedence of product ID
+// Find duplicates for sorting by issue code after precedence of product ID
 void issuecodeSort(struct productionLine line[])
 {
 
@@ -313,7 +340,7 @@ void issuecodeSort(struct productionLine line[])
 }//end issuecodeSort
 
 
-//merge sort issuecodes
+// Merge sort issuecodes
 void issuecodeMergeSort(struct productionLine line[], int low, int high)
 {
 
@@ -333,7 +360,7 @@ void issuecodeMergeSort(struct productionLine line[], int low, int high)
 }//end issuecodeMergeSort
 
 
-//merge part of sort for issue code
+// Merge part of sort for issue code
 void issuecodeMerge(struct productionLine line[],int low ,int mid ,int high)
 {
 
@@ -375,7 +402,7 @@ void issuecodeMerge(struct productionLine line[],int low ,int mid ,int high)
 }//end issuecodeMerge
 
 
-//find duplicates for sorting by batchDateTime after precedence of product ID and issue code
+// Find duplicates for sorting by batchDateTime after precedence of product ID and issue code
 void datetimeSort(struct productionLine line[])
 {
     
@@ -402,7 +429,7 @@ void datetimeSort(struct productionLine line[])
 }//end datetimeSort
 
 
-//merge sort batchdateTime
+// Merge sort batchdateTime
 void datetimeMergeSort(struct productionLine line[], int low, int high)
 {
     
@@ -422,7 +449,7 @@ void datetimeMergeSort(struct productionLine line[], int low, int high)
 }//end datetimeMergeSort
 
 
-//merge part of sort for batchDateTime
+// Merge part of sort for batchDateTime
 void datetimeMerge(struct productionLine line[], int low, int mid, int high)
 {
     
@@ -488,7 +515,7 @@ void datetimeMerge(struct productionLine line[], int low, int mid, int high)
 }//end datetimeMerge
 
 
-//print task1's sorted values
+// Print task1's sorted values
 void printProductionLineProdIDIssueCodeDate(struct productionLine line[], int lineNum) 
 {
     printf("\n\nProduction Line %d:\n\n", lineNum);
@@ -504,25 +531,27 @@ void printProductionLineProdIDIssueCodeDate(struct productionLine line[], int li
 
 
 
-//task 2 calling all necessary funxs
+// Task 2
 void task2( struct productionLine line1[], struct productionLine line2[], struct productionLine line3[], struct productionLine line4[])
 {
     struct node *head = NULL;
+    // Converting all data to single linked list
     head = structTolinkedList(line1, line2, line3, line4, SIZE);
     printf("\n\n\nTask 2:");
+    printf("\nLinked list to report issue codes by product Id and line Id for all production lines");
     printLink(head);
 
-}
+}//end task2
 
 
-//Changes the ordered structure to single linked list
+// Copying the ordered structures to a linked list
 struct node* structTolinkedList(struct productionLine line1[], struct productionLine line2[], struct productionLine line3[], struct productionLine line4[], int n)
 {
   struct node *head = NULL;
   struct node *temp = NULL;
 
+  // Copying line 1's values
   for (int i = 0; i < SIZE; i++) {
-
     if (head == NULL) {
       head = (struct node *)malloc(sizeof(struct node));
       head->linkedlist = line1[i];
@@ -534,10 +563,10 @@ struct node* structTolinkedList(struct productionLine line1[], struct production
       temp->linkedlist = line1[i];
       temp->next = NULL;
     }
-  }
+  }//end line1
 
+  // Copying line 2's values
   for (int i = 0; i < SIZE; i++) {
-
     if (head == NULL) {
       head = (struct node *)malloc(sizeof(struct node));
       head->linkedlist = line2[i];
@@ -549,10 +578,10 @@ struct node* structTolinkedList(struct productionLine line1[], struct production
       temp->linkedlist = line2[i];
       temp->next = NULL;
     }
-  }
+  }//end line2
 
+  // Copying line 3's values
   for (int i = 0; i < SIZE; i++) {
-
     if (head == NULL) {
       head = (struct node *)malloc(sizeof(struct node));
       head->linkedlist = line3[i];
@@ -564,10 +593,10 @@ struct node* structTolinkedList(struct productionLine line1[], struct production
       temp->linkedlist = line3[i];
       temp->next = NULL;
     }
-  }
+  }//end line3
 
+  // Copying line 4's values
   for (int i = 0; i < SIZE; i++) {
-
     if (head == NULL) {
       head = (struct node *)malloc(sizeof(struct node));
       head->linkedlist = line4[i];
@@ -579,14 +608,14 @@ struct node* structTolinkedList(struct productionLine line1[], struct production
       temp->linkedlist = line4[i];
       temp->next = NULL;
     }
-  }
+  }//end line4
 
   return head;
 
-} //end structTolinkedList
+}//end structTolinkedList
 
 
-//prints linked list
+// Display linked list
 void printLink(struct node *head)
 {
     if (head == NULL){
@@ -607,7 +636,7 @@ void printLink(struct node *head)
 
 
 
-//task 3
+// Task 3
 void task3(struct productionLine line1[], struct productionLine line2[], struct productionLine line3[], struct productionLine line4[])
 {
     struct productionLine tempstruct[4];
@@ -618,21 +647,36 @@ void task3(struct productionLine line1[], struct productionLine line2[], struct 
     int result = 0;
     int occurences = 0;
     int results[44];
-
+    int pIDs[UNIQUE_LINES] = {20475, 20314, 20129, 20786, 20651, 20937, 20802};
+    int iCs[UNIQUE_LINES] = {3147, 3276, 3032, 3428, 3965, 3210, 3856};
 
     printf("\n\n\nTask 3\n");
+    printf("Search for the earliest occurrence of an issue code for a given product id across all production lines.\n");
 
     printf("\n\nSample ProductIDs:\n 20475\n 20314\n 20129\n 20786\n 20651\n 20937\n 20802");
     printf("\nWhat productID do you want to search for?\n");
     scanf("%d", &pID);
+    // Check if user entered an actual Product ID
+    while (!validInput(pID, pIDs, SIZE)) {
+        printf("\nInvalid product ID. Please enter a valid one:\n");
+        scanf("%d", &pID);
+    }
+
+
     printf("\n\nSample Issue Codes:\n 3147\tFaulty component\n 3276\tAssembly issue\n 3032\tQuality control failed\n 3428\tPackaging error\n 3965\tShipping issue\n 3210\tDelayed delivery\n 3856\tIncorrect labeling");
     printf("\nWhat issue code do you want to search for?\n");
     scanf("%d", &iC);
+    // Check if user entered an actual Issue Code
+    while (!validInput(iC, iCs, SIZE)) {
+        printf("\nInvalid issue code. Please enter a valid one:\n");
+        scanf("%d", &iC);
+    }
 
-    // search for product id and then corresponding issue code, return values
+
+    // Search for product id and then corresponding issue code, return values
 
 
-    //line 1
+    // Line 1
     // Call binary Search function
     result = binarySearch(line1, low, high, pID, iC);
 
@@ -649,7 +693,7 @@ void task3(struct productionLine line1[], struct productionLine line2[], struct 
     }
 
 
-    //line 2
+    // Line 2 search
     result = binarySearch(line2, low, high, pID, iC);
 
     // Display result
@@ -665,7 +709,7 @@ void task3(struct productionLine line1[], struct productionLine line2[], struct 
     }
 
 
-    //line 3
+    // Line 3 search
     result = binarySearch(line3, low, high, pID, iC);
 
     // Display result
@@ -681,7 +725,7 @@ void task3(struct productionLine line1[], struct productionLine line2[], struct 
     }
 
 
-    //line 4
+    // Line 4 search
     result = binarySearch(line4, low, high, pID, iC);
 
     // Display result
@@ -696,7 +740,7 @@ void task3(struct productionLine line1[], struct productionLine line2[], struct 
         occurences ++;
     }
 
-    //display the fisrt occurence
+    // Display the fisrt occurence
     result = binarySearch(tempstruct, low, occurences, pID, iC);
     if(result != -1)
     {
@@ -713,42 +757,53 @@ void task3(struct productionLine line1[], struct productionLine line2[], struct 
 }//end task 3
 
 
-//binary search + checking for first occurence after finding target
+// Binary search + checking for first occurence after finding target
 int binarySearch(struct productionLine line[], int low, int high, int productID, int IC)
 {
     int mid = 0;
 
-    // if this case occurs, this means that the target number does not exist within the array
+    // If this case occurs, this means that the target number does not exist within the array
     if (low > high)
     {
-        // returning -1 just indicates that the number was not found in the if statement within the int main().
+        // Returning -1 just indicates that the number was not found in the if statement within the int main().
         return -1;
     } 
     else
     {
         mid = (low + high) / 2; 
 
-        // target found
+        // Target found
         if (line[mid].productId == productID && line[mid].issue.issueCode == IC)
         { 
             return mid;
         }
-        // target is less than the mid
+        // Target is less than the mid
         else if (productID < line[mid].productId || (line[mid].productId == productID && line[mid].issue.issueCode < IC))
         {
             return binarySearch(line, low, mid - 1, productID, IC);
         }
-        // target is greater than the mid
+        // Target is greater than the mid
         else 
         {
             return binarySearch(line, mid + 1, high, productID, IC);
         }
     }
 
-} //end binarySearch()
+}//end binarySearch()
+
+// Function to check if a value exists in an array
+bool validInput(int value, int *array, int size) 
+{
+    for (int i = 0; i < size; i++) {
+        if (array[i] == value) {
+            return true;
+        }
+    }
+    return false;
+}//end validInput
 
 
-//task 4
+// Task 4
 void task4(struct productionLine line1[], struct productionLine line2[], struct productionLine line3[], struct productionLine line4[])
 {
     int arr_20129[UNIQUE_LINES];
@@ -763,36 +818,40 @@ void task4(struct productionLine line1[], struct productionLine line2[], struct 
 
     int arrOfProdIDs[] = {20129, 20314, 20475, 20651, 20786, 20802, 20937};
     int issueCodeIndexMap[UNIQUE_LINES] = {3032, 3147, 3210, 3276, 3428, 3856, 3965};
+    int total;
 
 
     for (int i = 0; i < UNIQUE_LINES; i++){
         counts[i] = linearSearch(line1, line2, line3, line4, arrOfProdIDs[i], SIZE, issueCodeIndexMap);
     }
 
-    printf("\n\n\nTask 4\n");
+    printf("\n\n\nTask 4");
     printf("\nIssues reported on products over all production lines:\n");
-    printf("\nIssue Codes     |\t3032\t3147\t3210\t3276\t3428\t3856\t3965\n");
-    printf("-----------------------------------------------------------------------------\n");
-
+    printf("\nIssue Codes     |\t3032\t3147\t3210\t3276\t3428\t3856\t3965\tTotal Issues\n");
+    printf("----------------------------------------------------------------------------------------------\n");
+    // Display product Ids and their recorded issue codes across the production lines
     for (int i = 0; i < UNIQUE_LINES; i++) {
+        total = 0;
         printf("Product ID %d: ", arrOfProdIDs[i]);
         for (int j = 0; j < UNIQUE_LINES; j++) {
             printf("\t%d ", counts[i][j]);
+            total += counts[i][j];
         }
-        printf("\n");
+        printf("\t   %d\n", total);
     }
 
 
 
 }//end task 4
 
+// Linear search to find and count issue codes across product ids
 int* linearSearch(struct productionLine line1[], struct productionLine line2[], struct productionLine line3[], struct productionLine line4[], int prodID, int N, int issueCodeIndexMap[])
 {
 
     int* issueCodesPresence = (int *)calloc(UNIQUE_LINES, sizeof(int));
 
 
-    //line 1
+    // Line 1
     for (int i = 0; i < N; i++) {
         if (line1[i].productId == prodID) {
             for (int j = 0; j < 7; j++) {
@@ -805,7 +864,7 @@ int* linearSearch(struct productionLine line1[], struct productionLine line2[], 
     }
 
 
-    //line 2
+    // Line 2
     for (int i = 0; i < N; i++) {
         if (line2[i].productId == prodID) {
             for (int j = 0; j < 7; j++) {
@@ -818,7 +877,7 @@ int* linearSearch(struct productionLine line1[], struct productionLine line2[], 
     }
 
 
-    //line 3
+    // Line 3
     for (int i = 0; i < N; i++) {
         if (line3[i].productId == prodID) {
             for (int j = 0; j < 7; j++) {
@@ -831,7 +890,7 @@ int* linearSearch(struct productionLine line1[], struct productionLine line2[], 
     }
 
 
-    //line 4
+    // Line 4
     for (int i = 0; i < N; i++) {
         if (line4[i].productId == prodID) {
             for (int j = 0; j < 7; j++) {
