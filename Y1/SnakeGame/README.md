@@ -1,7 +1,8 @@
 # Module: Microprocessor Systems
 # Title: Game Assignment
-Date: March 2024
-Authors: Susanna Perkins, Ben McCarthy, Dean O'Brien
+Date: March 2024 <br>
+Authors: Susanna Perkins, Ben McCarthy, Dean O'Brien <br>
+Grade: 73% <br>
 <br>
 ## Description:
 This program is a simple snake game implemented in C for an STM32 microcontroller. It leverages the STM32 HAL for hardware interaction, including GPIO, timers, and interrupts, to enable real-time gameplay on an embedded system. The game features a moving snake, eatable apples, and a wrapping screen effect. The program is modular and includes functions for:
