@@ -1,3 +1,19 @@
+"""
+Title: Object Oriented Programming Labtest
+
+Program Description: 
+This program takes a password from user and checks if it meets the following password requirements:
+-Length >= 10
+-At least one number, special character and uppercase letter
+If password does not meet all these requirements the program suggests a version of their password that does meet the above requirements
+This process continues until user enters 'exit'
+
+Date: 15th October 2024
+
+Author: Susanna Perkins
+
+Grade: 100%
+"""
 import random
 import string
 
@@ -70,4 +86,3 @@ password = str(input("Enter a password for evaluation (or type 'exit' to quit): 
 while password != 'exit':
     strengthen_password(password)
     password = str(input("Enter a password for evaluation (or type 'exit' to quit): "))
-
