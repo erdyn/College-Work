@@ -12,5 +12,6 @@ Additionally, a function is coded to copy all the sorted data into a single link
 
 ## Design Process:
 Planning involved flowcharts and pseudocode before actually writing the code. This made the implementation process more efficient. <br>
-  - Task 2's flowchart: 
+  - <summary> Task 2's flowchart: 
 <img align="left" alt="C" width="700px" style="padding-right:10px;" src="https://raw.githubusercontent.com/erdyn/college-work/refs/heads/main/Y1/Algorithm-Assignment/flowchart.png" />
+</summary>
