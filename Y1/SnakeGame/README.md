@@ -12,6 +12,6 @@ Graphics and sound: Snake and apple sprites for a basic graphical interface, as 
 Input handling: Reads button states for directional movement using GPIO.
 The project demonstrates a blend of low-level hardware control and game development principles, making it suitable for showcasing embedded system capabilities.
 <br><br>
-<div style="display: flex; justify-content: center; align-items: center;">
+
 ![Gameplay](./snakeGamePlayGIF.gif)
-</div>
+
