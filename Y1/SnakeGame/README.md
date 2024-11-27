@@ -4,8 +4,6 @@ Date:  March 2024 <br>
 Authors:  Susanna Perkins, Ben McCarthy, Dean O'Brien <br>
 Grade:  74% <br>
 
-<br><br>
-
 ![Gameplay](./snakeGamePlayGIF.gif)
 <br>
 <details>
