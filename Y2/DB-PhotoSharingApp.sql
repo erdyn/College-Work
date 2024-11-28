@@ -287,9 +287,10 @@ create index photos_date on photos(publication_date);
 -- w index
 explain analyze
 select * from photos order by publication_date desc;
+
 -- SETS Q1
 -- Select all the userIDs that appear in both the likes and follow table
-select likes.user_identification
+select likes.user_identificationas as "Users that have interacted with other users"
 from likes
 intersect
 select follow.follower_id
