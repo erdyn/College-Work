@@ -290,7 +290,7 @@ select * from photos order by publication_date desc;
 
 -- SETS Q1
 -- Select all the userIDs that appear in both the likes and follow table
-select likes.user_identificationas as "Users that have interacted with other users"
+select likes.user_identification as "Users that have interacted with other users"
 from likes
 intersect
 select follow.follower_id
