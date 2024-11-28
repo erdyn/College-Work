@@ -256,3 +256,46 @@ on u.user_identification = p.user_identification
 where p.publication_date = (select min(publication_date) from photos);
 
 
+-- Week 10 Queiries
+
+-- INDEX Q1
+-- Compare: without Index
+explain analyze
+select * from users where username = 'Marcellus';
+
+
+-- Create index: users.username
+drop index if exists users_username_ind;
+create index users_username_ind on users(username);
+
+-- Compare with Index
+explain analyze
+select * from users where username = 'Marcellus';
+
+-- Because this is a small amount of data the difference doesn't represent how index scan differs
+
+
+-- INDEX Q2
+-- photos publication date desc
+explain analyze
+select * from photos order by publication_date desc ;
+
+-- index: photos.publication_date
+drop index if exists photos_date_ind;
+create index photos_date on photos(publication_date);
+
+-- w index
+explain analyze
+select * from photos order by publication_date desc;
+-- SETS Q1
+-- Select all the userIDs that appear in both the likes and follow table
+select likes.user_identification
+from likes
+intersect
+select follow.follower_id
+from follow
+union
+select follow.followee_id
+from follow;
+
+
